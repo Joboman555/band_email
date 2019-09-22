@@ -13,8 +13,6 @@ concerts = {}
 raw_html = simple_get('https://www.sinclaircambridge.com/events')
 html = BeautifulSoup(raw_html, 'html.parser')
 
-
-
 # Parse through entries
 for entry in html.find_all("div", class_="entry"):
     info = entry.find("div", class_='info')
@@ -26,7 +24,9 @@ for entry in html.find_all("div", class_="entry"):
 
     # Add parsed entry to dict of concerts
     if band_name not in concerts:
-        concerts[band_name] = ConcertInfo(date, 'The Sinclair')
+        # only add concerts in October
+        if date.month == 10:
+            concerts[band_name] = ConcertInfo(date, 'The Sinclair')
 
 
 for k in concerts:
