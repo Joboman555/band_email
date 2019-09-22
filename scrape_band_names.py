@@ -2,14 +2,13 @@
 
 from simple_get import simple_get
 from bs4 import BeautifulSoup
-from collections import namedtuple
 from datetime import datetime
+from ConcertInfo import ConcertInfo
 
-ConcertInfo = namedtuple('ConcertInfo', ['date', 'venue'])
 concerts = {}
 
 # 1. Get band names performing in sinclair in October
-def scrape_sinclair(month):
+def scrape_sinclair(concerts, month):
     # Connect to Sinclair Website
     html = BeautifulSoup(simple_get('https://www.sinclaircambridge.com/events'))
 
@@ -28,7 +27,9 @@ def scrape_sinclair(month):
             if date.month == month:
                 concerts[band_name] = ConcertInfo(date, 'The Sinclair')
 
-scrape_sinclair(month=10)
+    return concerts
+
+concerts = scrape_sinclair(concerts, month=10)
 
 for k in concerts:
     print(k, concerts[k])
