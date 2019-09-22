@@ -19,7 +19,10 @@ html = BeautifulSoup(raw_html, 'html.parser')
 for entry in html.find_all("div", class_="entry"):
     info = entry.find("div", class_='info')
     band_name = info.find("div", class_='title').h3.text.strip()
-    date = info.find("div", class_='date-time-container').find("span", class_='date').text.strip()
+    date_str = info.find("div", class_='date-time-container').find("span", class_='date').text.strip()
+
+    # Convert date string to datetime object
+    date = datetime.strptime(' '.join(date_str.split()[1:]), '%b %d, %Y')
 
     # Add parsed entry to dict of concerts
     if band_name not in concerts:
