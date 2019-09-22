@@ -5,8 +5,8 @@ from bs4 import BeautifulSoup
 from collections import namedtuple
 from datetime import datetime
 
-Concert = namedtuple('Concert', ['band_name', 'date', 'venue'])
-concerts = []
+ConcertInfo = namedtuple('ConcertInfo', ['date', 'venue'])
+concerts = {}
 
 # 1. Get band names performing in sinclair in October
 # Connect to Sinclair Website
@@ -21,8 +21,10 @@ for entry in html.find_all("div", class_="entry"):
     band_name = info.find("div", class_='title').h3.text.strip()
     date = info.find("div", class_='date-time-container').find("span", class_='date').text.strip()
 
-    # Add parsed entry to set of concerts
-    concerts.append(Concert(band_name, date, 'The Sinclair'))
+    # Add parsed entry to dict of concerts
+    if band_name not in concerts:
+        concerts[band_name] = ConcertInfo(date, 'The Sinclair')
 
-for c in concerts:
-    print(c)
+
+for k in concerts:
+    print(k, concerts[k])
