@@ -5,12 +5,10 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from ConcertInfo import ConcertInfo
 
-concerts = {}
-
 # 1. Get band names performing in sinclair in October
 def scrape_sinclair(concerts, month):
     # Connect to Sinclair Website
-    html = BeautifulSoup(simple_get('https://www.sinclaircambridge.com/events'))
+    html = BeautifulSoup(simple_get('https://www.sinclaircambridge.com/events'), 'html.parser')
 
     # Parse through entries
     for entry in html.find_all("div", class_="entry"):
@@ -29,7 +27,8 @@ def scrape_sinclair(concerts, month):
 
     return concerts
 
-concerts = scrape_sinclair(concerts, month=10)
+if __name__ == "__main__":
+    concerts = scrape_sinclair({}, month=10)
 
-for k in concerts:
-    print(k, concerts[k])
+    for k in concerts:
+        print(k, concerts[k])
